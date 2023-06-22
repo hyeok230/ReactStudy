@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="root"></div>
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script type="text/babel">
+    console.log(React);
+    console.log(ReactDOM);
+
+    class App extends React.Component {
+      state = {
+        age: 39,
+      }
+      interval = null;
+      
+      constructor(props) {
+        super(props);
+
+        console.log("constructor", props);
+      }
+
+      render() {
+        console.log('render');
+        return (
+          <div>
+            <h2>
+              Hello {this.props.name} - {this.state.age}
+            </h2>
+          </div>
+        )
+      }
+
+      componentWillMount() {
+        console.log("componentWillMount");
+      }
+      componentDidMount() {
+        console.log("componentDidMount");
+
+        this.interval = setInterval(() => {
+          this.setState(state => ({...state, age: state.age + 1}))
+        }, 1000);
+      }
+
+      // componentWillReceiveProps
+      // props를 새로 지정했을 때 바로 호출
+      // 여기는 state의 변경에 반응하지 않음
+      // 여기서 props의 값에 따라 state를 변경해야 한다면,
+      // setState를 이용해 state 변경
+      // 그러면 다음 이벤트로 각각 가는 것이 아니라 한번에 변경됨
+      componentWillReceiveProps(nextProps) {
+        console.log('componentWillReceiveProps', nextProps);
+      }
+
+      // shouldComponentUpdate
+      // props만 변경되어도 실행, state만 변경되어도 실행
+      // props & state 둘다 변경되어도 실행
+      // newProps와 newState를 인자로 해서 호출
+      // return이 ture면 render, false면 render되지 않음
+      // default는 true
+      shouldComponentUpdate(nextProps, nextState) {
+        console.log("shouldComponentUpdate", nextProps, nextState);
+
+        return true;
+      }
+
+      // componentWillUpdate
+      // 컴포넌트가 재 랜더링되기 직전에 불림
+      // 여기선 setState 사용하면 안됨
+      componentWillUpdate(nextProps, nextState) {
+        console.log("componentWillUpdate", nextProps, nextState);
+      }
+
+      // componentDidUpdate
+      // 컴포넌트가 재 랜더링을 마치면 불림
+      componentDidUpdate(prevProps, prevState) {
+        console.log("componentDidUpdate", prevProps, prevState);
+      }
+
+      componentWillUnmount() {
+        clearInterval(this.interval);
+      }
+    }
+
+    ReactDOM.render(<App name="Mark" />, document.querySelector('#root'))
+  </script>
+</body>
+</html>
