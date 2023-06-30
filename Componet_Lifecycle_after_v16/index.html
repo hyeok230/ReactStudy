@@ -37,15 +37,20 @@
         )
       }
 
-      componentWillMount() {
-        console.log("componentWillMount");
+      static getDerivedStateFromProps(nextProps, prevState) {
+        console.log("getDerivedStateFromProps", nextProps, prevState);
+
+        return {
+          age: 390,
+        };
       }
+
       componentDidMount() {
         console.log("componentDidMount");
 
-        this.interval = setInterval(() => {
-          this.setState(state => ({...state, age: state.age + 1}))
-        }, 1000);
+        // this.interval = setInterval(() => {
+        //   this.setState(state => ({...state, age: state.age + 1}))
+        // }, 1000);
       }
 
       // componentWillReceiveProps
@@ -54,9 +59,9 @@
       // 여기서 props의 값에 따라 state를 변경해야 한다면,
       // setState를 이용해 state 변경
       // 그러면 다음 이벤트로 각각 가는 것이 아니라 한번에 변경됨
-      componentWillReceiveProps(nextProps) {
-        console.log('componentWillReceiveProps', nextProps);
-      }
+      // componentWillReceiveProps(nextProps) {
+      //   console.log('componentWillReceiveProps', nextProps);
+      // }
 
       // shouldComponentUpdate
       // props만 변경되어도 실행, state만 변경되어도 실행
@@ -73,9 +78,9 @@
       // componentWillUpdate
       // 컴포넌트가 재 랜더링되기 직전에 불림
       // 여기선 setState 사용하면 안됨
-      componentWillUpdate(nextProps, nextState) {
-        console.log("componentWillUpdate", nextProps, nextState);
-      }
+      // componentWillUpdate(nextProps, nextState) {
+      //   console.log("componentWillUpdate", nextProps, nextState);
+      // }
 
       // componentDidUpdate
       // 컴포넌트가 재 랜더링을 마치면 불림
